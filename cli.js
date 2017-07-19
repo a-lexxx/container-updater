@@ -3,7 +3,7 @@ const DM = require('./lib/docker');
 
 const args = process.argv.reduce((acc, item) => {
     if (acc.inserting) acc.push(item);
-    item === __filename && (acc.inserting = true);
+    __filename.startsWith(item) && (acc.inserting = true);
     return acc;
 }, []);
 

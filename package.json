@@ -1,12 +1,12 @@
 {
   "name": "container-updater",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Docker container updater",
   "main": "index.js",
   "scripts": {
     "start": "node index",
     "build": "docker build . -t docker-updater --build-arg CUPD_VERSION=$npm_package_version",
-    "container": "docker run --rm -d -v /var/run/docker.sock:/var/run/docker.sock -v $PWD/run:/opt/app/run -t docker-updater:latest",
+    "container": "docker run --rm -d -v /var/run/docker.sock:/var/run/docker.sock -v $PWD/run:/opt/app/run -t syngularity/container-updater:latest",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/stochastical/container-updater#readme",
   "dependencies": {
-    "docker-hub-webhook-handler": "0.0.1",
+    "docker-hub-webhook-handler": "^0.0.2",
     "dockerode": "^2.5.0",
     "file-eval": "^1.2.0",
     "intel": "^1.2.0",

@@ -1,6 +1,6 @@
 module.exports = {
     general: {
-        port: 8080,
+        port: 'run/cupd_webhook.sock',
         prefix: '/webhook',
         secret: 'myhashsecret'
         // https://github.com/apocas/dockerode#getting-started

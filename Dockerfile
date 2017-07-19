@@ -5,12 +5,11 @@ VOLUME /opt/app/run
 ARG CUPD_VERSION
 ENV CUPD_VERSION=${CUPD_VERSION:-"1.0.0"}
 
-LABEL syngularity.docker.updater \
-      syngularity.docker.updater.version=${CUPD_VERSION}
+LABEL syngularity.docker.updater="${CUPD_VERSION}"
 
 WORKDIR /opt/app
 COPY . ./
-RUN npm i --production=false --quiet
+RUN npm i --production=true --quiet
 
 
 CMD npm start

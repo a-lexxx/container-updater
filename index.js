@@ -8,7 +8,15 @@ const logger = require('./lib/logger');
 const config = require('./lib/config-provider')('run/config.js');
 const DM = require('./lib/docker');
 
-// TODO: prevent from running several copies
+const fs = require('fs');
+
+function unlinkSocket(file) {
+    try {
+        fs.unlinkSync(file);
+    } catch (e) {} // eslint-disable-line no-empty
+}
+
+// TODO: prevent running several copies
 
 logger.info('Starting...');
 
@@ -21,14 +29,21 @@ config.reload()
             responseCode: 404,
             responseText: 'Not found'  // prevent info disclosure
         });
+        const portOrSocket = config.get('general.port');
+        const isSocket = isNaN(portOrSocket);
+        isSocket && unlinkSocket(portOrSocket);
 
-        http.createServer(function(req, res) {
+        const server = http.createServer(function(req, res) {
             handler(req, res, function(err) { // eslint-disable-line no-unused-vars
                 logger.debug('Error occured', err);
                 res.statusCode = 404;
                 res.end('Not found'); // prevent info disclosure
             });
-        }).listen(config.get('general.port'));
+        }).listen(portOrSocket);
+
+        server.on('listening', () => {
+            isSocket && fs.chmod(portOrSocket, 0o666);
+        });
 
         handler.on('error', function(err, req) {
             const remote = req && req.socket && req.socket.remoteAddress;

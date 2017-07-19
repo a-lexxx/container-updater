@@ -18,7 +18,7 @@ By default is loaded from run/config.js
 ```
     module.exports = {
         general: {
-            port: 8080,
+            port: 'run/cupd_webhook.sock',
             prefix: '/webhook',
             secret: 'myhashsecret'
             // https://github.com/apocas/dockerode#getting-started
@@ -56,4 +56,10 @@ By default is loaded from run/config.js
 ## CLI
 ```
 node cli.js update <imageName>
+```
+
+## Install
+```
+docker pull syngularity/container-updater
+docker run --rm -d -v /var/run/docker.sock:/var/run/docker.sock -v $PWD/run:/opt/app/run -t syngularity/container-updater:latest
 ```
